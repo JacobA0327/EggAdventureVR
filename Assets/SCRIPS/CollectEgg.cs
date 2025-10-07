@@ -4,29 +4,37 @@ using UnityEngine;
 
 public class CollectEgg : MonoBehaviour
 {
-    public ParticleSystem collectParticles; // Asigna aquí tu sistema de partículas
+    public ParticleSystem pickupEffect;  // Efecto de partículas
+    public AudioClip pickupSound;        // (Opcional) Sonido al recoger
+    public float destroyDelay = 1f;      // Tiempo antes de desaparecer el huevo
+
+    private bool collected = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        // Si el objeto que entra es el Player
+        // Verifica si el que toca es el jugador (la cámara o su collider)
+        if (collected) return;
+
         if (other.CompareTag("Player"))
         {
-            // Sumar huevo al manager
-            EggManager.instance.AddEgg();
+            collected = true;
 
-            // Activar partículas (si existen)
-            if (collectParticles != null)
+            // Mostrar efecto de partículas
+            if (pickupEffect != null)
             {
-                // Desvinculamos el sistema de partículas para que no se destruya con el huevo
-                collectParticles.transform.parent = null;
-                collectParticles.Play();
+                pickupEffect.transform.parent = null; // separa del huevo
+                pickupEffect.Play();
+                Destroy(pickupEffect.gameObject, pickupEffect.main.duration);
+            }
 
-                // Destruir partículas después de que terminen
-                Destroy(collectParticles.gameObject, collectParticles.main.duration);
+            // Reproducir sonido si tiene
+            if (pickupSound != null)
+            {
+                AudioSource.PlayClipAtPoint(pickupSound, transform.position);
             }
 
             // Destruir el huevo
-            Destroy(gameObject);
+            Destroy(gameObject, destroyDelay);
         }
     }
 }
