@@ -10823,7 +10823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupEffect: {fileID: 955249224}
-  pickupSound: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: b2f9e9e65d8020f44af42ee5a158e0df, type: 3}
   destroyDelay: 1
 --- !u!135 &688122093
 SphereCollider:
@@ -17387,7 +17387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupEffect: {fileID: 563301284}
-  pickupSound: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: b2f9e9e65d8020f44af42ee5a158e0df, type: 3}
   destroyDelay: 1
 --- !u!135 &1481197403
 SphereCollider:
@@ -18020,7 +18020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupEffect: {fileID: 555544960}
-  pickupSound: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: b2f9e9e65d8020f44af42ee5a158e0df, type: 3}
   destroyDelay: 1
 --- !u!1001 &1614659438
 PrefabInstance:

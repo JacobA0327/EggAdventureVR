@@ -40,7 +40,8 @@ public class CollectEgg : MonoBehaviour
             }
 
             // Destruir el huevo
-            Destroy(gameObject, destroyDelay);
+            Destroy(gameObject, destroyDelay + 0.1f);
+
         }
     }
 }
