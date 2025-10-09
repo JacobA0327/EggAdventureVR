@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectEgg : MonoBehaviour
 {
-    public ParticleSystem pickupEffect;  // Efecto de partículas
+    public ParticleSystem pickupEffect;  // Efecto de partÃ­culas
     public AudioClip pickupSound;        // (Opcional) Sonido al recoger
     public float destroyDelay = 1f;      // Tiempo antes de desaparecer el huevo
 
@@ -12,14 +12,20 @@ public class CollectEgg : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Verifica si el que toca es el jugador (la cámara o su collider)
+        // Verifica si el que toca es el jugador
         if (collected) return;
 
         if (other.CompareTag("Player"))
         {
             collected = true;
 
-            // Mostrar efecto de partículas
+            // ðŸ”¹ Llamar al contador de huevos
+            if (EggCounter.instance != null)
+            {
+                EggCounter.instance.SumarHuevo();
+            }
+
+            // Mostrar efecto de partÃ­culas
             if (pickupEffect != null)
             {
                 pickupEffect.transform.parent = null; // separa del huevo
