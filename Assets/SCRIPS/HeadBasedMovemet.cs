@@ -9,11 +9,10 @@ public class HeadBasedMovement : MonoBehaviour
     public float moveSpeed = 2f;
     public float headTiltThreshold = 10f;
 
-    [Header("Physics Settings")]
-    public float gravity = -9.81f;
+    [Header("Altura fija")]
+    public float fixedHeight = 1.6f; // altura constante del jugador sobre el suelo
 
     private CharacterController controller;
-    private float verticalVelocity;
 
     void Start()
     {
@@ -24,6 +23,11 @@ public class HeadBasedMovement : MonoBehaviour
     {
         if (head == null || controller == null)
             return;
+
+        // Mantener altura constante
+        Vector3 position = transform.position;
+        position.y = fixedHeight;
+        transform.position = position;
 
         // Detectar inclinación vertical (mirar hacia arriba/abajo)
         float tilt = head.eulerAngles.x;
@@ -39,18 +43,7 @@ public class HeadBasedMovement : MonoBehaviour
             move *= moveSpeed;
         }
 
-        // Aplicar gravedad para mantener altura estable (sin pegarse)
-        if (controller.isGrounded)
-        {
-            verticalVelocity = -1f; // mantiene contacto sin hundirse
-        }
-        else
-        {
-            verticalVelocity += gravity * Time.deltaTime;
-        }
-
-        move.y = verticalVelocity;
-
+        // Movimiento horizontal (sin gravedad, sin cambio de altura)
         controller.Move(move * Time.deltaTime);
     }
 }
