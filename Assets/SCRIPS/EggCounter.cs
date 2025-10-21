@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class EggCounter : MonoBehaviour
 {
-    public static EggCounter instance;   // Para acceder desde otros scripts f�cilmente
+    public static EggCounter instance;   // Para acceder desde otros scripts fácilmente
     public TextMeshProUGUI textoHuevos;  // Texto en pantalla que muestra los huevos
     private int contadorHuevos = 0;      // Total de huevos recogidos
 

@@ -4,44 +4,96 @@ using UnityEngine;
 
 public class CollectEgg : MonoBehaviour
 {
-    public ParticleSystem pickupEffect;  // Efecto de partículas
-    public AudioClip pickupSound;        // (Opcional) Sonido al recoger
-    public float destroyDelay = 1f;      // Tiempo antes de desaparecer el huevo
+    [Header("Efectos")]
+    public ParticleSystem pickupEffect;
+    public AudioClip pickupSound;
+    public float destroyDelay = 1f;
 
     private bool collected = false;
 
+    [Header("Orden de huevos (asigna en Inspector)")]
+    public List<CollectEgg> eggsOrder;
+
+    [Header("Jugador (para teletransporte)")]
+    public Transform player;
+    public float teleportOffsetY = 1.6f;
+    public float teleportDistance = 3f; // 🔹 Distancia lateral al huevo siguiente
+
+    private void Start()
+    {
+        // Solo el primer huevo será visible al iniciar
+        if (eggsOrder != null && eggsOrder.Count > 0 && this != eggsOrder[0])
+            gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        // Verifica si el que toca es el jugador
-        if (collected) return;
+        if (collected || !other.CompareTag("Player")) return;
+        collected = true;
 
-        if (other.CompareTag("Player"))
+        // 🔹 Contador
+        if (EggCounter.instance != null)
+            EggCounter.instance.SumarHuevo();
+
+        // 🔹 Efecto visual
+        if (pickupEffect != null)
         {
-            collected = true;
-
-            // 🔹 Llamar al contador de huevos
-            if (EggCounter.instance != null)
-            {
-                EggCounter.instance.SumarHuevo();
-            }
-
-            // Mostrar efecto de partículas
-            if (pickupEffect != null)
-            {
-                pickupEffect.transform.parent = null; // separa del huevo
-                pickupEffect.Play();
-                Destroy(pickupEffect.gameObject, pickupEffect.main.duration);
-            }
-
-            // Reproducir sonido si tiene
-            if (pickupSound != null)
-            {
-                AudioSource.PlayClipAtPoint(pickupSound, transform.position);
-            }
-
-            // Destruir el huevo
-            Destroy(gameObject, destroyDelay + 0.1f);
-
+            pickupEffect.transform.parent = null;
+            pickupEffect.Play();
+            Destroy(pickupEffect.gameObject, pickupEffect.main.duration);
         }
+
+        // 🔹 Sonido
+        if (pickupSound != null)
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+
+        // 🔹 Teletransporte y control de orden
+        HandleTeleportAndOrder();
+
+        Destroy(gameObject, destroyDelay + 0.1f);
+    }
+
+    private void HandleTeleportAndOrder()
+    {
+        if (eggsOrder == null || eggsOrder.Count == 0) return;
+
+        int nextIndex = eggsOrder.IndexOf(this) + 1;
+
+        if (nextIndex < eggsOrder.Count)
+        {
+            CollectEgg nextEgg = eggsOrder[nextIndex];
+            nextEgg.gameObject.SetActive(true);
+
+            // 🔹 Desactiva temporalmente el collider del siguiente huevo
+            Collider eggCollider = nextEgg.GetComponent<Collider>();
+            if (eggCollider != null)
+                StartCoroutine(EnableColliderAfterDelay(eggCollider, 1f));
+
+            // 🔹 Calcula una posición lateral al huevo siguiente
+            if (player != null)
+            {
+                Vector3 eggPos = nextEgg.transform.position;
+                Vector3 offset = nextEgg.transform.right * teleportDistance; // mueve a un lado del huevo
+                Vector3 destino = eggPos + offset;
+                destino.y += teleportOffsetY;
+
+                CharacterController cc = player.GetComponent<CharacterController>();
+                if (cc != null) cc.enabled = false;
+                player.position = destino;
+                if (cc != null) cc.enabled = true;
+            }
+        }
+        else
+        {
+            Debug.Log("¡Has recogido el último huevo!");
+        }
+    }
+
+    // 🔹 Espera 1 segundo antes de activar el siguiente collider
+    private IEnumerator EnableColliderAfterDelay(Collider col, float delay)
+    {
+        col.enabled = false;
+        yield return new WaitForSeconds(delay);
+        col.enabled = true;
     }
 }
