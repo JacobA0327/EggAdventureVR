@@ -17,7 +17,7 @@ public class CollectEgg : MonoBehaviour
     [Header("Jugador (para teletransporte)")]
     public Transform player;
     public float teleportOffsetY = 1.6f;
-    public float teleportDistance = 3f; // 🔹 Distancia lateral al huevo siguiente
+    public float teleportDistance = 3f; // Distancia lateral al huevo siguiente
 
     private void Start()
     {
@@ -31,7 +31,7 @@ public class CollectEgg : MonoBehaviour
         if (collected || !other.CompareTag("Player")) return;
         collected = true;
 
-        // 🔹 Contador
+        // 🔹 Contador de huevos
         if (EggCounter.instance != null)
             EggCounter.instance.SumarHuevo();
 
@@ -50,7 +50,15 @@ public class CollectEgg : MonoBehaviour
         // 🔹 Teletransporte y control de orden
         HandleTeleportAndOrder();
 
-        Destroy(gameObject, destroyDelay + 0.1f);
+        // 🔹 Destruye el huevo después de terminar las acciones
+        StartCoroutine(DestroyAfterDelay());
+    }
+
+    private IEnumerator DestroyAfterDelay()
+    {
+        yield return new WaitForSeconds(destroyDelay + 0.2f);
+        if (this != null && gameObject != null)
+            Destroy(gameObject);
     }
 
     private void HandleTeleportAndOrder()
@@ -59,7 +67,8 @@ public class CollectEgg : MonoBehaviour
 
         int nextIndex = eggsOrder.IndexOf(this) + 1;
 
-        if (nextIndex < eggsOrder.Count)
+        // 🔹 Comprueba que el siguiente huevo existe antes de acceder
+        if (nextIndex < eggsOrder.Count && eggsOrder[nextIndex] != null)
         {
             CollectEgg nextEgg = eggsOrder[nextIndex];
             nextEgg.gameObject.SetActive(true);
@@ -67,7 +76,7 @@ public class CollectEgg : MonoBehaviour
             // 🔹 Desactiva temporalmente el collider del siguiente huevo
             Collider eggCollider = nextEgg.GetComponent<Collider>();
             if (eggCollider != null)
-                StartCoroutine(EnableColliderAfterDelay(eggCollider, 1f));
+                StartCoroutine(EnableColliderAfterDelay(eggCollider, 1.5f)); // espera 1.5 seg
 
             // 🔹 Calcula una posición lateral al huevo siguiente
             if (player != null)
@@ -77,6 +86,7 @@ public class CollectEgg : MonoBehaviour
                 Vector3 destino = eggPos + offset;
                 destino.y += teleportOffsetY;
 
+                // 🔹 Teletransporta al jugador de forma segura
                 CharacterController cc = player.GetComponent<CharacterController>();
                 if (cc != null) cc.enabled = false;
                 player.position = destino;
@@ -89,11 +99,13 @@ public class CollectEgg : MonoBehaviour
         }
     }
 
-    // 🔹 Espera 1 segundo antes de activar el siguiente collider
+    // 🔹 Espera antes de reactivar el siguiente huevo para evitar recogerlo de inmediato
     private IEnumerator EnableColliderAfterDelay(Collider col, float delay)
     {
+        if (col == null) yield break;
         col.enabled = false;
         yield return new WaitForSeconds(delay);
-        col.enabled = true;
+        if (col != null)
+            col.enabled = true;
     }
 }
