@@ -8,8 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Samples/Google Cardboard XR Plugin for Unity/1.29.0/Hello Cardboard/Scenes/JuegoGranjaVR.unity
     guid: e229c2c185caf1f4ab2b75e83d032193
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Samples/Google Cardboard XR Plugin for Unity/1.29.0/Hello Cardboard/Scenes/INICIO.unity
+    guid: 751511ebf4053634fa9876db2effbdf7
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 9cf4892593f952343bcf6b69b89e9bbe, type: 2}
