@@ -5,13 +5,12 @@ using TMPro;
 
 public class EggCounter : MonoBehaviour
 {
-    public static EggCounter instance;   // Para acceder desde otros scripts fácilmente
-    public TextMeshProUGUI textoHuevos;  // Texto en pantalla que muestra los huevos
-    private int contadorHuevos = 0;      // Total de huevos recogidos
+    public static EggCounter instance; // Para acceder desde otros scripts fácilmente
+    public TextMeshProUGUI textoHuevos; // Texto en pantalla que muestra los huevos
+    private int huevosRecolectados = 0; // Total de huevos recogidos
 
     void Awake()
     {
-        // Asegura que solo haya un contador activo
         if (instance == null)
             instance = this;
         else
@@ -23,17 +22,26 @@ public class EggCounter : MonoBehaviour
         ActualizarTexto();
     }
 
-    // Llamado cada vez que se recoge un huevo
-    public void SumarHuevo()
-    {
-        contadorHuevos++;
-        ActualizarTexto();
-    }
-
-    // Actualiza el texto en pantalla
     private void ActualizarTexto()
     {
         if (textoHuevos != null)
-            textoHuevos.text = "Huevos: " + contadorHuevos;
+            textoHuevos.text = "Huevos: " + huevosRecolectados;
+    }
+
+    //  Versión correcta que se comunica con el temporizador
+    public void SumarHuevo()
+    {
+        huevosRecolectados++;
+        ActualizarTexto();
+
+        // 🔹 Avisar al GameTimer para revisar victoria
+        GameTimer timer = FindObjectOfType<GameTimer>();
+        if (timer != null)
+            timer.RevisarVictoria(huevosRecolectados);
+    }
+
+    public int GetTotalHuevos()
+    {
+        return huevosRecolectados;
     }
 }

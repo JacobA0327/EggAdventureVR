@@ -17,7 +17,8 @@ public class CollectEgg : MonoBehaviour
     [Header("Jugador (para teletransporte)")]
     public Transform player;
     public float teleportOffsetY = 1.6f;
-    public float teleportDistance = 3f; // Distancia lateral al huevo siguiente
+    public float teleportDistance = 3f; // 🔹 Distancia lateral al huevo siguiente
+    public float delayBeforeNextEgg = 1.5f; // 🔹 Tiempo para habilitar el siguiente huevo
 
     private void Start()
     {
@@ -31,7 +32,7 @@ public class CollectEgg : MonoBehaviour
         if (collected || !other.CompareTag("Player")) return;
         collected = true;
 
-        // 🔹 Contador de huevos
+        // 🔹 Contador
         if (EggCounter.instance != null)
             EggCounter.instance.SumarHuevo();
 
@@ -47,18 +48,16 @@ public class CollectEgg : MonoBehaviour
         if (pickupSound != null)
             AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 
-        // 🔹 Teletransporte y control de orden
-        HandleTeleportAndOrder();
-
-        // 🔹 Destruye el huevo después de terminar las acciones
-        StartCoroutine(DestroyAfterDelay());
+        // 🔹 Retrasa el teletransporte y la activación del siguiente huevo
+        StartCoroutine(HandleTeleportAfterDelay());
     }
 
-    private IEnumerator DestroyAfterDelay()
+    private IEnumerator HandleTeleportAfterDelay()
     {
-        yield return new WaitForSeconds(destroyDelay + 0.2f);
-        if (this != null && gameObject != null)
-            Destroy(gameObject);
+        yield return new WaitForSeconds(0.5f);
+        HandleTeleportAndOrder();
+        yield return new WaitForSeconds(destroyDelay);
+        Destroy(gameObject);
     }
 
     private void HandleTeleportAndOrder()
@@ -67,26 +66,22 @@ public class CollectEgg : MonoBehaviour
 
         int nextIndex = eggsOrder.IndexOf(this) + 1;
 
-        // 🔹 Comprueba que el siguiente huevo existe antes de acceder
-        if (nextIndex < eggsOrder.Count && eggsOrder[nextIndex] != null)
+        if (nextIndex < eggsOrder.Count)
         {
             CollectEgg nextEgg = eggsOrder[nextIndex];
             nextEgg.gameObject.SetActive(true);
 
-            // 🔹 Desactiva temporalmente el collider del siguiente huevo
-            Collider eggCollider = nextEgg.GetComponent<Collider>();
-            if (eggCollider != null)
-                StartCoroutine(EnableColliderAfterDelay(eggCollider, 1.5f)); // espera 1.5 seg
+            // 🔹 Aseguramos que el collider realmente se active
+            StartCoroutine(EnableColliderSafely(nextEgg, delayBeforeNextEgg));
 
-            // 🔹 Calcula una posición lateral al huevo siguiente
+            // 🔹 Teletransporta al jugador a un lado del siguiente huevo
             if (player != null)
             {
                 Vector3 eggPos = nextEgg.transform.position;
-                Vector3 offset = nextEgg.transform.right * teleportDistance; // mueve a un lado del huevo
+                Vector3 offset = nextEgg.transform.right * teleportDistance;
                 Vector3 destino = eggPos + offset;
                 destino.y += teleportOffsetY;
 
-                // 🔹 Teletransporta al jugador de forma segura
                 CharacterController cc = player.GetComponent<CharacterController>();
                 if (cc != null) cc.enabled = false;
                 player.position = destino;
@@ -99,13 +94,21 @@ public class CollectEgg : MonoBehaviour
         }
     }
 
-    // 🔹 Espera antes de reactivar el siguiente huevo para evitar recogerlo de inmediato
-    private IEnumerator EnableColliderAfterDelay(Collider col, float delay)
+    // 🔹 Activa el collider del siguiente huevo con seguridad
+    private IEnumerator EnableColliderSafely(CollectEgg egg, float delay)
     {
-        if (col == null) yield break;
-        col.enabled = false;
         yield return new WaitForSeconds(delay);
-        if (col != null)
-            col.enabled = true;
+
+        if (egg != null)
+        {
+            Collider col = egg.GetComponent<Collider>();
+            if (col != null)
+            {
+                col.enabled = false;
+                yield return null; // Espera un frame antes de activarlo
+                col.enabled = true;
+                Debug.Log(" Collider reactivado: " + egg.name);
+            }
+        }
     }
 }
