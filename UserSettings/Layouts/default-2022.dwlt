@@ -428,9 +428,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 32840000
+      m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: f8f4fffff6faffff
+      m_ExpandedIDs: f6faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.06307011, y: -0.22613691, z: 0.014674253, w: 0.9719411}
     speed: 2
-    m_Value: {x: -0.06307011, y: 0.2261369, z: -0.014674253, w: -0.9719411}
+    m_Value: {x: 0.063070096, y: -0.22613685, z: 0.014674249, w: 0.9719409}
   m_Size:
     m_Target: 39.792248
     speed: 2
@@ -1217,7 +1217,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Samples/Google Cardboard XR Plugin for Unity/1.29.0/Hello Cardboard/Scenes
+    - Assets/SCRIPS
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1225,16 +1225,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Samples/Google Cardboard XR Plugin for Unity/1.29.0/Hello Cardboard/Scenes
+  - Assets/SCRIPS
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\jacob\Desktop\UNITY\EggAdventureVR
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 194.20001}
-    m_SelectedIDs: ea830000
-    m_LastClickedID: 33770
-    m_ExpandedIDs: 00000000de830000e0830000e2830000e4830000e6830000e8830000ea830000ec830000ee830000f083000000ca9a3b
+    scrollPos: {x: 0, y: 254.20001}
+    m_SelectedIDs: fe7f0000
+    m_LastClickedID: 32766
+    m_ExpandedIDs: 00000000c67f0000c87f0000ca7f0000cc7f0000ce7f0000d07f0000d47f0000d67f0000d87f000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1262,7 +1262,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000de830000e0830000e2830000e4830000e6830000e8830000ea830000ec830000ee830000f0830000
+    m_ExpandedIDs: 00000000c67f0000c87f0000ca7f0000cc7f0000ce7f0000d07f0000d27f0000d47f0000d67f0000d87f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1293,15 +1293,15 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: 3c64000064610000d45e000084740000f4680000ae770000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Icosahedron_Pink_BakedDiffuse
-      m_OriginalName: Icosahedron_Pink_BakedDiffuse
+      m_Name: PRUEBA XDXDXD
+      m_OriginalName: PRUEBA XDXDXD
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 32780
+      m_UserData: 32814
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0
