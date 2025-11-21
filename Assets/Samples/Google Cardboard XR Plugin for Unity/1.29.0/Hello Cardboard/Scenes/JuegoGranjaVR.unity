@@ -20740,7 +20740,7 @@ MonoBehaviour:
   - {fileID: 1667702447}
   player: {fileID: 1265934433}
   teleportOffsetY: 2
-  teleportDistance: 500
+  teleportDistance: 550
   delayBeforeNextEgg: 1.5
 --- !u!135 &688122093
 SphereCollider:
@@ -21278,6 +21278,7 @@ RectTransform:
   - {fileID: 131263161}
   - {fileID: 1430959457}
   - {fileID: 469999297}
+  - {fileID: 1873731621}
   - {fileID: 278222220}
   - {fileID: 1087726993}
   m_Father: {fileID: 0}
@@ -28942,11 +28943,11 @@ Transform:
   m_GameObject: {fileID: 1873731619}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.000000029802322, z: 0.0000000055879354, w: 1}
-  m_LocalPosition: {x: 939.75, y: 289.5, z: 0}
+  m_LocalPosition: {x: 388.50006, y: 160.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 882463001}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1948003027 stripped
 GameObject:
@@ -29691,7 +29692,6 @@ SceneRoots:
   - {fileID: 585108001}
   - {fileID: 882463001}
   - {fileID: 2126134825}
-  - {fileID: 1873731621}
   - {fileID: 2088258293}
   - {fileID: 1737175664}
   - {fileID: 1132175069}
